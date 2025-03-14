@@ -32,14 +32,14 @@ function CreatePokemonPage(): React.ReactNode {
     inputRef.current?.focus();
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     createPokemon(
       {
         basePokemonId: formData.basePokemonId,
         createPokemonParams: {
-          nickname: formData.nickname || selectedBasePokemon?.name || '',
+          nickname: formData.nickname ?? selectedBasePokemon?.name ?? '',
           level: formData.level,
         },
       },
@@ -47,7 +47,7 @@ function CreatePokemonPage(): React.ReactNode {
         onSuccess: ({ success, error }) => {
           if (success) {
             toast.success('Pokemon created successfully');
-            navigate(`/pokemons?basePokemonId=${formData.basePokemonId}`);
+            void navigate(`/pokemons?basePokemonId=${formData.basePokemonId}`);
           } else {
             toast.error(error);
           }
@@ -97,7 +97,7 @@ function CreatePokemonPage(): React.ReactNode {
             value={formData.nickname}
             onChange={(e) => setFormData({ ...formData, nickname: e.target.value })}
             className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-background-primary"
-            placeholder={selectedBasePokemon?.name || "Enter nickname"}
+            placeholder={selectedBasePokemon?.name ?? "Enter nickname"}
           />
         </div>
 
@@ -118,7 +118,7 @@ function CreatePokemonPage(): React.ReactNode {
         <div className="flex justify-end gap-4">
           <button
             type="button"
-            onClick={() => navigate(`/pokemons?basePokemonId=${formData.basePokemonId}`, { replace: true })}
+            onClick={() => void navigate(`/pokemons?basePokemonId=${formData.basePokemonId}`, { replace: true })}
             className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 transition-colors"
           >
             Cancel

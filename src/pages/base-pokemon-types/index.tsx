@@ -37,7 +37,7 @@ function BasePokemonTypesPage(): React.ReactNode {
   };
 
   const handleCreateBasePokemonType = () => {
-    navigate('/base-pokemon-types/create');
+    void navigate('/base-pokemon-types/create');
   };
 
   const handleDeleteType = (id: number) => {
@@ -47,7 +47,7 @@ function BasePokemonTypesPage(): React.ReactNode {
         onSuccess: ({ success, error }) => {
           if (success) {
             toast.success('Base Pokemon Type deleted successfully');
-            refetch();
+            void refetch();
           } else {
             toast.error(`Failed to delete Base Pokemon Type: ${error}`);
           }
@@ -59,7 +59,7 @@ function BasePokemonTypesPage(): React.ReactNode {
     );
   };
 
-  const totalPages = Math.max(1, Math.ceil((types?.count || 0) / PAGE_LIMIT));
+  const totalPages = Math.max(1, Math.ceil((types?.count ?? 0) / PAGE_LIMIT));
 
   return (
     <div className="flex justify-center items-center w-full">
@@ -142,7 +142,7 @@ function BasePokemonTypesPage(): React.ReactNode {
 
         <div className="mt-4 flex justify-between items-center">
           <div className="text-sm text-gray-700">
-            Showing {types?.items.length || 0} of {types?.count || 0} types
+            Showing {types?.items.length ?? 0} of {types?.count ?? 0} types
           </div>
           <div className="flex gap-2">
             <button

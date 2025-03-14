@@ -38,14 +38,14 @@ function CreateBasePokemonPage(): React.ReactNode {
 
   const { mutate: createBasePokemon } = useCreateBasePokemon();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     createBasePokemon(formData, {
       onSuccess: ({ success, error }) => {
         if (success) {
           toast.success('Base Pokemon created successfully');
-          navigate('/base-pokemons');
+          void navigate('/base-pokemons');
         } else {
           toast.error(error);
         }
@@ -214,7 +214,7 @@ function CreateBasePokemonPage(): React.ReactNode {
         <div className="flex justify-end gap-4">
           <button
             type="button"
-            onClick={() => navigate('/base-pokemons')}
+            onClick={() => void navigate('/base-pokemons')}
             className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 transition-colors"
           >
             Cancel

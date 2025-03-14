@@ -1,5 +1,5 @@
 export * from './useBasePokemons';
-export * from './usePokemon';
+export * from './usePokemons';
 export * from './useBasePokemonTypes';
 export * from './useCreatePokemon';
 export * from './useDeletePokemon';

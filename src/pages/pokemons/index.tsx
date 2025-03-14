@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 
-import { usePokemon, useBasePokemons, useDeletePokemon, useDeleteBasePokemon } from '@/hooks/pokemons';
+import { usePokemons, useBasePokemons, useDeletePokemon, useDeleteBasePokemon } from '@/hooks/pokemons';
 import { LoadingRow } from '@/components/LoadingRow/LoadingRow';
 
 const PAGE_LIMIT = 10;
@@ -22,7 +22,7 @@ function PokemonsPage(): React.ReactNode {
     data: pokemon,
     isPending: isLoadingPokemon,
     refetch: refetchPokemon,
-  } = usePokemon(Number(basePokemonId), {
+  } = usePokemons(Number(basePokemonId), {
     limit: PAGE_LIMIT,
     offset,
     nickname: debouncedNickname
@@ -33,7 +33,7 @@ function PokemonsPage(): React.ReactNode {
 
   useEffect(() => {
     if (!basePokemonId && basePokemons?.items.length) {
-      setSearchParams({ basePokemonId: basePokemons.items[0]?.id.toString() || '' });
+      setSearchParams({ basePokemonId: basePokemons.items[0]?.id.toString() ?? '' });
     }
   }, [basePokemonId, basePokemons, setSearchParams]);
 
@@ -48,16 +48,12 @@ function PokemonsPage(): React.ReactNode {
 
   const selectedBasePokemon = basePokemons?.items.find(pokemon => pokemon.id === Number(basePokemonId));
 
-  const handleCreatePokemon = () => {
-    navigate(`/pokemons/create?basePokemonId=${basePokemonId}`);
-  };
-
   const handleDeletePokemon = (pokemonId: number) => {
     deletePokemon({ pokemonId }, {
       onSuccess: ({ success, error }) => {
         if (success) {
           toast.success('Pokemon deleted successfully');
-          refetchPokemon();
+          void refetchPokemon();
         } else {
           toast.error(`Failed to delete Pokemon: ${error}`);
         }
@@ -75,14 +71,14 @@ function PokemonsPage(): React.ReactNode {
       onSuccess: ({ success, error }) => {
         if (success) {
           toast.success('Base Pokemon deleted successfully');
-          refetchBase();
-
-          if (basePokemons?.items.length) {
-            const nextPokemon = basePokemons.items.find(p => p.id !== Number(basePokemonId));
-          if (nextPokemon) {
-            setSearchParams({ basePokemonId: nextPokemon.id.toString() });
+          void refetchBase().then(() => {
+            if (basePokemons?.items.length) {
+              const nextPokemon = basePokemons.items.find(p => p.id !== Number(basePokemonId));
+              if (nextPokemon) {
+                setSearchParams({ basePokemonId: nextPokemon.id.toString() });
+              }
             }
-          }
+          });
         } else {
           toast.error(`Failed to delete Base Pokemon: ${error}`);
         }
@@ -101,7 +97,7 @@ function PokemonsPage(): React.ReactNode {
     setSearchInput(e.target.value);
   };
 
-  const totalPages = Math.ceil((pokemon?.count || 0) / PAGE_LIMIT);
+  const totalPages = Math.ceil((pokemon?.count ?? 0) / PAGE_LIMIT);
 
   if (isLoadingBase && isLoadingPokemon) {
     return (
@@ -135,7 +131,7 @@ function PokemonsPage(): React.ReactNode {
             <div className="mb-6 flex justify-between items-center gap-8">
               <div className="w-[400px]">
                 <select
-                  value={basePokemonId || ''}
+                  value={basePokemonId ?? ''}
                   onChange={handleBasePokemonChange}
                   className="text-2xl font-bold bg-transparent border-none focus:outline-none focus:ring-0 w-full"
                   style={{ width: '100%' }}
@@ -214,7 +210,7 @@ function PokemonsPage(): React.ReactNode {
             </svg>
           </div>
           <button
-            onClick={handleCreatePokemon}
+            onClick={() => void navigate(`/pokemons/create?basePokemonId=${basePokemonId}`)}
             className="px-4 py-2.5 bg-background-primary text-text-primary rounded-lg shadow-sm hover:bg-background-primary/80 transition-colors flex items-center gap-2"
           >
             <svg
@@ -288,7 +284,7 @@ function PokemonsPage(): React.ReactNode {
         {/* Pagination */}
         <div className="mt-4 flex justify-between items-center">
           <div className="text-sm text-gray-700">
-            Showing {pokemon?.items.length || 0} of {pokemon?.count || 0} Pokemon instances
+            Showing {pokemon?.items.length ?? 0} of {pokemon?.count ?? 0} Pokemon instances
           </div>
           <div className="flex gap-2">
             <button

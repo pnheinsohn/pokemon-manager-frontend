@@ -10,7 +10,7 @@ interface BreadcrumbRoute {
 
 // Helper function to convert path to label
 const pathToLabel = (path: string): string => {
-  const segment = path.split('/').pop() || '';
+  const segment = path.split('/').pop() ?? '';
   return segment
     .split('-')
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
@@ -143,7 +143,7 @@ const AppLayout = (): React.ReactNode => {
     <li key={`${breadcrumb?.path}-${index}`} className="flex items-center">
       {index < breadcrumbs.length - 1 ? (
         <>
-          <Link to={breadcrumb?.path || ''} className="text-gray-500 hover:text-gray-700">
+          <Link to={breadcrumb?.path ?? ''} className="text-gray-500 hover:text-gray-700">
             {breadcrumb?.label}
           </Link>
           <span className="mx-2 text-gray-400">/</span>

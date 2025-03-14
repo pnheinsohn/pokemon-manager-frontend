@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 
 function ReportDetailsPage(): React.ReactNode {
   const { id } = useParams();
-  const { data: report, isLoading, error, refetch } = useReport(id || '');
+  const { data: report, isLoading, error, refetch } = useReport(id ?? '');
 
   const handleRefetch = () => {
     refetch().then(

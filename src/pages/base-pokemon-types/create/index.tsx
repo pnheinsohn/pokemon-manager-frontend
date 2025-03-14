@@ -20,20 +20,20 @@ function CreateBasePokemonTypePage(): React.ReactNode {
 
   const { mutate: createBasePokemonType } = useCreateBasePokemonType();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     createBasePokemonType({ name: formData.name }, {
       onSuccess: ({ success, error }) => {
         if (success) {
           toast.success('Type created successfully');
-          navigate('/base-pokemon-types');
+          void navigate('/base-pokemon-types');
         } else {
           toast.error(error);
         }
       },
       onError: () => {
-        toast.error(`Failed to create Base Pokemon Type: Unknown error`);
+        toast.error('Failed to create Base Pokemon Type: Unknown error');
       }
     });
   };
@@ -64,7 +64,7 @@ function CreateBasePokemonTypePage(): React.ReactNode {
         <div className="flex justify-end gap-4">
           <button
             type="button"
-            onClick={() => navigate('/base-pokemon-types', { replace: true })}
+            onClick={() => void navigate('/base-pokemon-types', { replace: true })}
             className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 transition-colors"
           >
             Cancel

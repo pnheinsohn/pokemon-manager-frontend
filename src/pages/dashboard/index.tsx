@@ -30,10 +30,6 @@ function DashboardPage(): React.ReactNode {
     return { status: 'pending', timestamp: report.pendingAt };
   };
 
-  const handleReportClick = (reportId: string) => {
-    navigate(`/dashboard/report-details/${reportId}`);
-  };
-
   const handleDeleteReport = (e: React.MouseEvent, reportId: string) => {
     e.stopPropagation();
 
@@ -42,9 +38,9 @@ function DashboardPage(): React.ReactNode {
         if (success) {
           toast.success('Report deleted successfully');
           if (showCommon) {
-            refetchMostCommon();
+            void refetchMostCommon();
           } else {
-            refetchHighest();
+            void refetchHighest();
           }
         } else {
           toast.error(`Failed to delete report: ${error}`);
@@ -95,9 +91,9 @@ function DashboardPage(): React.ReactNode {
                       if (success) {
                         toast.success('Report generated successfully');
                         if (showCommon) {
-                          refetchMostCommon();
+                          void refetchMostCommon();
                         } else {
-                          refetchHighest();
+                          void refetchHighest();
                         }
                       } else {
                         toast.error(`Failed to generate report: ${error}`);
@@ -123,7 +119,7 @@ function DashboardPage(): React.ReactNode {
                     <tr
                       key={report.id}
                       className="hover:bg-gray-50 cursor-pointer"
-                      onClick={() => handleReportClick(report.id)}
+                      onClick={() => void navigate(`/dashboard/report-details/${report.id}`)}
                     >
                       <td className="px-6 py-4 whitespace-nowrap">{report.id}</td>
                       <td className="px-6 py-4 whitespace-nowrap capitalize">{status}</td>
@@ -152,7 +148,7 @@ function DashboardPage(): React.ReactNode {
                     <tr
                       key={report.id}
                       className="hover:bg-gray-50 cursor-pointer"
-                      onClick={() => handleReportClick(report.id)}
+                      onClick={() => void navigate(`/dashboard/report-details/${report.id}`)}
                     >
                       <td className="px-6 py-4 whitespace-nowrap">{report.id}</td>
                       <td className="px-6 py-4 whitespace-nowrap capitalize">{status}</td>

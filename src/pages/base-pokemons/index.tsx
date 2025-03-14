@@ -36,14 +36,6 @@ function BasePokemonsPage(): React.ReactNode {
     setSearchInput(e.target.value);
   };
 
-  const handlePokemonClick = (pokemonId: number) => {
-    navigate(`/pokemons?basePokemonId=${pokemonId}`);
-  };
-
-  const handleCreateBasePokemon = () => {
-    navigate('/base-pokemons/create');
-  };
-
   const handleDeletePokemon = (e: React.MouseEvent, pokemonId: number) => {
     e.stopPropagation();
 
@@ -51,7 +43,7 @@ function BasePokemonsPage(): React.ReactNode {
       onSuccess: ({ success, error }) => {
         if (success) {
           toast.success('Base Pokemon deleted successfully');
-          refetch();
+          void refetch();
         } else {
           toast.error(`Failed to delete Base Pokemon: ${error}`);
         }
@@ -62,7 +54,7 @@ function BasePokemonsPage(): React.ReactNode {
     });
   };
 
-  const totalPages = Math.ceil((basePokemons?.count || 0) / PAGE_LIMIT);
+  const totalPages = Math.ceil((basePokemons?.count ?? 0) / PAGE_LIMIT);
 
   return (
     <div className="flex justify-center items-center w-full">
@@ -87,7 +79,7 @@ function BasePokemonsPage(): React.ReactNode {
             </svg>
           </div>
           <button
-            onClick={handleCreateBasePokemon}
+            onClick={() => void navigate('/base-pokemons/create')}
             className="px-4 py-2.5 bg-background-primary text-text-primary rounded-lg shadow-sm hover:bg-background-primary/80 transition-colors flex items-center gap-2"
           >
             <svg
@@ -133,7 +125,7 @@ function BasePokemonsPage(): React.ReactNode {
                 <tr
                   key={pokemon.id}
                   className={`hover:bg-gray-50 cursor-pointer ${isPending ? 'opacity-50' : ''}`}
-                  onClick={() => handlePokemonClick(pokemon.id)}
+                  onClick={() => void navigate(`/pokemons?basePokemonId=${pokemon.id}`)}
                 >
                   <td className="px-6 py-4 whitespace-nowrap">{pokemon.pokedexNumber}</td>
                   <td className="px-6 py-4 whitespace-nowrap">{pokemon.name}</td>
@@ -160,14 +152,14 @@ function BasePokemonsPage(): React.ReactNode {
 
         <div className="mt-4 flex justify-between items-center">
           <div className="text-sm text-gray-700">
-            Showing {basePokemons?.items.length || 0} of {basePokemons?.count || 0} base Pokemons
+            Showing {basePokemons?.items.length ?? 0} of {basePokemons?.count ?? 0} base Pokemons
           </div>
           <div className="flex gap-2">
             <button
               onClick={() => setPage(p => Math.max(1, p - 1))}
               disabled={page === 1}
               className={`px-3 py-1 rounded ${
-                page === 1 
+                page === 1
                   ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                   : 'bg-white text-gray-700 hover:bg-gray-50'
               }`}

@@ -32,7 +32,10 @@ const addInterceptors = (instance: ReturnType<typeof axios.create>) => {
       return response;
     },
     (error: AxiosError) => {
-      return Promise.reject(new Error(`An unexpected error occurred: ${error.response?.data}`));
+      const errorMessage = error.response?.data
+        ? JSON.stringify(error.response.data)
+        : error.message;
+      return Promise.reject(new Error(`An unexpected error occurred: ${errorMessage}`));
     }
   );
   return instance;
