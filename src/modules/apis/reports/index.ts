@@ -1,9 +1,9 @@
 import { reportsApiInstance } from '@/modules/apis/axios';
-import type { IPaginatedResponse, ICreateResponse } from '@/modules/apis/axios/types';
-import type { IGenerateReportParams, IReport } from './types';
+import type { IPaginatedResponse, ICreateResponse, IDeleteResponse } from '@/modules/apis/axios/types';
+import type { IGenerateReportParams, IReport, IDeleteReportParams } from './types';
 
 export const reportsApi = {
-  deleteReport: (reportId: string) => reportsApiInstance.delete(`/${reportId}`),
+  deleteReport: (deleteReportParams: IDeleteReportParams) => reportsApiInstance.delete<IDeleteResponse>(`/${deleteReportParams.reportId}`),
 
   getHighestLevelPokemonReports: () => reportsApiInstance.get<IPaginatedResponse<IReport>>('/', { params: { reportType: 'level' } }),
 

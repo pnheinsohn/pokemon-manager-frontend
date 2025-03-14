@@ -38,7 +38,7 @@ export const pokemonApi = {
       params: searchParams
     }),
 
-  getPokemon: (basePokemonId: number, searchParams: IPokemonsSearchParams) =>
+  getPokemons: (basePokemonId: number, searchParams: IPokemonsSearchParams) =>
     pokemonsApiInstance.get<IPaginatedResponse<IPokemon>>(
       `/base-pokemons/${basePokemonId}`,
       { params: searchParams }

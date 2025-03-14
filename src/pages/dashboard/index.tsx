@@ -37,7 +37,7 @@ function DashboardPage(): React.ReactNode {
   const handleDeleteReport = (e: React.MouseEvent, reportId: string) => {
     e.stopPropagation();
 
-    deleteReport(reportId, {
+    deleteReport({ reportId }, {
       onSuccess: ({ success, error }) => {
         if (success) {
           toast.success('Report deleted successfully');

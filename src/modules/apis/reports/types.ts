@@ -2,6 +2,10 @@ export interface IGenerateReportParams {
   reportType: 'common' | 'level';
 }
 
+export interface IDeleteReportParams {
+  reportId: string;
+}
+
 export interface IReport {
   id: string;
   pendingAt: string;
@@ -9,5 +13,5 @@ export interface IReport {
   failedAt: string | null;
   reportType: 'common' | 'level';
   status: 'pending' | 'completed' | 'failed';
-  data: Record<string, any>[];
+  data: Record<string, unknown>[];
 }
